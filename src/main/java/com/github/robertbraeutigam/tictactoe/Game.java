@@ -8,7 +8,7 @@ package com.github.robertbraeutigam.tictactoe;
 public final class Game {
    private final Board board;
    private final Player[] players;
-   private int currentPlayer = -1;
+   private int currentPlayer = 0;
 
    /**
     * Construct a game with the given board and players. Player 1 will start the game.

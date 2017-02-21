@@ -1,13 +1,12 @@
-package com.github.robertbraeutigam.tictactoe.view;
+package com.github.robertbraeutigam.tictactoe;
 
-import com.github.robertbraeutigam.tictactoe.Board;
 import java.util.List;
 
 /**
  * How a player sees the board. That is, there are cells on the board,
  * all of which are either free, taken by the enemy or owned by the player.
  */
-public interface View extends Board {
+public interface View {
    /**
     * @return All the cells on the board, from the perspective of this view.
     */
@@ -18,11 +17,6 @@ public interface View extends Board {
          .filter(cell -> cell.isAt(position))
          .findFirst()
          .orElseThrow(() -> new IllegalArgumentException("no cell at "+position));
-   }
-
-   @Override
-   default boolean isFull() {
-      return cells().stream().anyMatch(Cell::isEmpty);
    }
 
    interface Cell {

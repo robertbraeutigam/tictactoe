@@ -1,4 +1,4 @@
-package com.github.robertbraeutigam.tictactoe.view;
+package com.github.robertbraeutigam.tictactoe;
 
 /**
  * A position of a cell on a two dimensional board, specified by
