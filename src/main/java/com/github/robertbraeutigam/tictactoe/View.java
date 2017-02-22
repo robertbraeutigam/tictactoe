@@ -16,8 +16,10 @@ public interface View {
       return cells().stream()
          .filter(cell -> cell.isAt(position))
          .findFirst()
-         .orElseThrow(() -> new IllegalArgumentException("no cell at "+position));
+         .orElseThrow(() -> new IllegalArgumentException("no cell at "+position+", all cells were: "+cells()));
    }
+
+   void draw(UI ui);
 
    interface Cell {
       /**
@@ -44,6 +46,18 @@ public interface View {
        * Own this cell. This can only be done if empty. It not, exception is thrown.
        */
       void mark();
+   }
+
+   interface UI {
+      /**
+       * Draw the board. Board is a 2D array, with position (0,0) as first element, x axis
+       * in the rows, y in columns.
+       */
+      void drawBoard(Mark[][] board);
+
+      enum Mark {
+         EMPTY, MINE, ENEMYS;
+      }
    }
 }
 

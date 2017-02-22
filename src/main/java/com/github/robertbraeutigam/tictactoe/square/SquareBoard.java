@@ -53,9 +53,30 @@ public final class SquareBoard implements Board {
 
       @Override
       public List<Cell> cells() {
-         return IntStream.range(0, size)
+         return IntStream.range(0, board.length)
             .mapToObj(index -> new SquareCell(index, identity))
             .collect(Collectors.toList());
+      }
+
+      @Override
+      public void draw(UI ui) {
+         UI.Mark[][] boardMarks = new UI.Mark[size][size];
+         for (int y=0; y<size; y++) {
+            for (int x=0; x<size; x++) {
+               boardMarks[y][x] = identityToMark(y*size+x);
+            }
+         }
+         ui.drawBoard(boardMarks);
+      }
+
+      private UI.Mark identityToMark(int position) {
+         if (board[position] == identity) {
+            return UI.Mark.MINE;
+         } else if (board[position] == 0) {
+            return UI.Mark.EMPTY;
+         } else {
+            return UI.Mark.ENEMYS;
+         }
       }
    }
 
@@ -94,6 +115,11 @@ public final class SquareBoard implements Board {
       @Override
       public boolean isEnemys() {
          return board[index] == -identity;
+      }
+
+      @Override
+      public String toString() {
+         return "Cell "+board[index]+" at "+x+","+y;
       }
 
       @Override
