@@ -1,5 +1,5 @@
-OO-OO-Tic-Tac-Toe
-=================
+OO-OO-OO-Tic-Tac-Toe
+====================
 
 Showcase for an object-oriented Tic-Tac-Toe, demonstrating some OO concepts like
 Encapsulation, Information Hiding, Dependency Inversion.
