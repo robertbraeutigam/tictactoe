@@ -31,7 +31,7 @@ public final class SquareBoard implements Board {
 
    @Override
    public View getPlayer2View() {
-      return new SquareView(2);
+      return new SquareView(-1);
    }
 
    @Override
