@@ -14,8 +14,8 @@ public final class HumanPlayer implements Player {
 
    @Override
    public void makeMove() {
-      view.draw(ui);
-      view.cellAt(ui.askForMove()).mark();
+      view.show(ui::draw);
+      view.show(cells -> ui.askForMove().selectFrom(cells).mark());
    }
 }
 

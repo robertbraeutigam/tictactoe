@@ -1,7 +1,7 @@
 package com.github.robertbraeutigam.tictactoe.console;
 
 import com.github.robertbraeutigam.tictactoe.human.UI;
-import com.github.robertbraeutigam.tictactoe.Position;
+import com.github.robertbraeutigam.tictactoe.View.Cell;
 import static java.util.Arrays.asList;
 import java.util.stream.Collectors;
 
@@ -15,11 +15,11 @@ public final class ConsoleUI implements UI {
    }
 
    @Override
-   public void drawBoard(Mark[][] board) {
-      asList(board).forEach(this::drawRow);
+   public void draw(Cell[][] cells) {
+      asList(cells).forEach(this::drawRow);
    }
 
-   private void drawRow(Mark[] row) {
+   private void drawRow(Cell[] row) {
       System.console().printf(
             asList(row).stream()
             .map(this::markToDisplayMark)
@@ -27,13 +27,12 @@ public final class ConsoleUI implements UI {
          +"\n");
    }
 
-   private String markToDisplayMark(Mark mark) {
-      switch (mark) {
-         case MINE:
+   private String markToDisplayMark(Cell cell) {
+      if (cell.isMine()) {
             return ""+mineMark;
-         case ENEMYS:
+      } else if (cell.isEnemys()) {
             return ""+enemysMark;
-         default:
+      } else {
             return ".";
       }
    }
@@ -41,6 +40,13 @@ public final class ConsoleUI implements UI {
    @Override
    public Position askForMove() {
       String positionInput = System.console().readLine("Enter your move '"+mineMark+"' (x,y): ");
-      return new Position(Integer.parseInt(positionInput.split(",")[0]), Integer.parseInt(positionInput.split(",")[1]));
+      int x = Integer.parseInt(positionInput.split(",")[0]);
+      int y = Integer.parseInt(positionInput.split(",")[1]);
+      return new Position() {
+         @Override
+         public Cell selectFrom(Cell[][] cells) {
+            return cells[y][x];
+         }
+      };
    }
 }

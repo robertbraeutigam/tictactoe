@@ -2,10 +2,8 @@ package com.github.robertbraeutigam.tictactoe.square;
 
 import com.github.robertbraeutigam.tictactoe.Board;
 import com.github.robertbraeutigam.tictactoe.View;
-import com.github.robertbraeutigam.tictactoe.Position;
-import java.util.List;
 import java.util.stream.IntStream;
-import java.util.stream.Collectors;
+import java.util.function.Consumer;
 import static java.lang.Math.abs;
 
 /**
@@ -52,31 +50,19 @@ public final class SquareBoard implements Board {
       }
 
       @Override
-      public List<Cell> cells() {
-         return IntStream.range(0, board.length)
-            .mapToObj(index -> new SquareCell(index, identity))
-            .collect(Collectors.toList());
+      public void show(Consumer<Cell[][]> cellConsumer) {
+          cellConsumer.accept(cells());
       }
 
-      @Override
-      public void draw(UI ui) {
-         UI.Mark[][] boardMarks = new UI.Mark[size][size];
+      private Cell[][] cells() {
+         Cell[][] cells = new Cell[size][size];
          for (int y=0; y<size; y++) {
             for (int x=0; x<size; x++) {
-               boardMarks[y][x] = identityToMark(y*size+x);
+               int index = x+y*size;
+               cells[y][x] = new SquareCell(index, identity);
             }
          }
-         ui.drawBoard(boardMarks);
-      }
-
-      private UI.Mark identityToMark(int position) {
-         if (board[position] == identity) {
-            return UI.Mark.MINE;
-         } else if (board[position] == 0) {
-            return UI.Mark.EMPTY;
-         } else {
-            return UI.Mark.ENEMYS;
-         }
+         return cells;
       }
    }
 
@@ -94,15 +80,6 @@ public final class SquareBoard implements Board {
       }
 
       @Override
-      public boolean isAt(Position position) {
-         return getPosition().equals(position);
-      }
-
-      private Position getPosition() {
-         return new Position(x, y);
-      }
-
-      @Override
       public boolean isEmpty() {
          return board[index] == 0;
       }
@@ -113,11 +90,6 @@ public final class SquareBoard implements Board {
       }
 
       @Override
-      public boolean isEnemys() {
-         return board[index] == -identity;
-      }
-
-      @Override
       public String toString() {
          return "Cell "+board[index]+" at "+x+","+y;
       }
@@ -125,7 +97,7 @@ public final class SquareBoard implements Board {
       @Override
       public void mark() {
          if (!isEmpty()) {
-            throw new IllegalStateException("can not mark cell at "+getPosition()+", it is already taken");
+            throw new IllegalStateException("can not mark cell at ("+x+","+y+"), it is already taken");
          }
          board[index] = identity;
          boardScore[x] += identity;

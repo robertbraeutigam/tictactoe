@@ -2,9 +2,12 @@ package com.github.robertbraeutigam.tictactoe.random;
 
 import com.github.robertbraeutigam.tictactoe.Player;
 import com.github.robertbraeutigam.tictactoe.View;
+import com.github.robertbraeutigam.tictactoe.View.Cell;
 import java.util.Random;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import static java.util.Arrays.asList;
 
 /**
  * Player that just marks a random free spot.
@@ -20,8 +23,13 @@ public final class RandomPlayer implements Player {
 
    @Override
    public void makeMove() {
-      List<View.Cell> emptyCells =
-         view.cells().stream().filter(View.Cell::isEmpty).collect(Collectors.toList());
+      view.show(this::makeMove);
+   }
+
+   private void makeMove(Cell[][] cells) {
+      Stream<Cell> cellStream = asList(cells).stream().flatMap(row -> asList(row).stream());
+      Stream<Cell> emptyCellsStream = cellStream.filter(View.Cell::isEmpty);
+      List<View.Cell> emptyCells = emptyCellsStream.collect(Collectors.toList());
       emptyCells.get(rnd.nextInt(emptyCells.size())).mark();
    }
 }
