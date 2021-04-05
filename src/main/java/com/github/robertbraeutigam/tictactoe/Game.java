@@ -25,6 +25,6 @@ public final class Game {
    }
 
    private Player nextPlayer() {
-      return players[(turn++) % 2];
+      return players[(turn++) % players.length];
    }
 }
