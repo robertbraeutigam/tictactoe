@@ -7,13 +7,16 @@ Encapsulation, Information Hiding, Dependency Inversion.
 To run the game, just type:
 
 ```
- mvn exec:java
+mvn exec:java
+```
+
+To run the test, type:
+
+```
+mvn test
 ```
 
 ### Feedback
 
-Input/error handling is not the main focus of this exercise, so that may stay as basic
-as it is right now.
-
-That being said, feedback and suggestions in the form of issues or pull requests are very welcome!
+Feedback and suggestions in the form of issues or pull requests are very welcome!
 

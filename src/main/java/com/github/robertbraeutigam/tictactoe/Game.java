@@ -1,30 +1,40 @@
 package com.github.robertbraeutigam.tictactoe;
 
-/**
- * Main logic of the Tic-Tac-Toe game. It is played on a Board by
- * two Players, who make their move in turns until the board contains
- * a full row, or the board is full.
- */
-public final class Game {
-   private final Board board;
-   private final Player[] players;
-   private int turn = 0;
+import java.io.PrintStream;
+import java.util.Optional;
 
-   /**
-    * Construct a game with the given board and players. Player 1 will start the game.
-    */
-   public Game(Board board, Player player1, Player player2) {
-      this.board = board;
-      this.players = new Player[] { player1, player2 };
-   }
+final class Game {
+    private final PrintStream outStream;
+    private final TurnTracker turnTracker;
+    private final Board board;
+    Game(PrintStream outStream, TurnTracker turnTracker, Board board) {
+        this.outStream = outStream;
+        this.turnTracker = turnTracker;
+        this.board = board;
+    }
 
-   public void play() {
-      while (!board.containsRow() && !board.isFull()) {
-         nextPlayer().makeMove();
-      }
-   }
+    void start() {
+        while (true) {
+            displayCurrentGameState();
+            turnTracker.doCurrentPlayerTurn();
 
-   private Player nextPlayer() {
-      return players[(turn++) % players.length];
-   }
+            Optional<EndGameState> maybeEndGameState = board.checkForEndOfGame();
+            if (maybeEndGameState.isPresent()) {
+                EndGameState endGameState = maybeEndGameState.orElseThrow();
+                board.display();
+                endGameState.display(outStream);
+                break;
+            }
+
+            turnTracker.advanceToNextTurn();
+        }
+    }
+
+    private void displayCurrentGameState() {
+        outStream.println();
+        turnTracker.displayCurrentPlayerSymbol();
+        outStream.print("'s turn.\n");
+
+        board.display();
+    }
 }
